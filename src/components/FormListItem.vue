@@ -6,7 +6,7 @@ defineProps<{form: FormSummary}>();
 
 </script>
 <template>
-  <Card class="w-full">
+  <Card class="w-full border border-surface-200 dark:border-surface-700 shadow-sm">
     <template #title>
       <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">
@@ -22,7 +22,7 @@ defineProps<{form: FormSummary}>();
           </div>
         </div>
 
-        <span class="text-xl group-hover:text-primary-500 transition-colors">
+        <span class="text-xl group-hover:text-primary-500 font-bold">
           {{ form.title }}
         </span>
       </div>
