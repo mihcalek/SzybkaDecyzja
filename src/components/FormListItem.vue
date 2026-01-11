@@ -23,11 +23,16 @@ const handleShare = (form: FormSummary | FormDetails) => {
     <template #title>
       <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">
-          <Tag
-            :value="form.ongoing ? 'Aktywna' : 'Zakończona'"
-            :severity="form.ongoing ? 'success' : 'secondary'"
-            class="uppercase text-[10px]"
-          />
+          <div class="flex gap-2">
+            <Tag
+              :value="form.ongoing ? 'Aktywna' : 'Zakończona'"
+              :severity="form.ongoing ? 'success' : 'secondary'"
+              class="uppercase text-[10px]"
+            />
+            <Tag v-if="form.creatorToken" value="Twoja ankieta" severity="info" variant="outline"  class="uppercase text-[10px]"/>
+            <Tag v-if="form.has_voted" value="Zagłosowano" severity="success" variant="outline"  class="uppercase text-[10px]"/>
+          </div>
+
 
           <div class="flex flex-col items-end gap-2">
             <Button

@@ -20,6 +20,7 @@ const handlePublish = () => {
   const newForm = {
     id: crypto.randomUUID(),
     title: title.value,
+    creatorToken: crypto.randomUUID(),
     description: description.value,
     questions: questions || [],
     ongoing: true,

@@ -29,6 +29,7 @@ export interface FormSummary {
   number_of_votes: number
   ongoing: boolean
   createdAt: string | Date
+  creatorToken?: string;
 }
 
 export interface FormDetails extends FormSummary {

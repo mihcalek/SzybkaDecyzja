@@ -6,7 +6,12 @@ export function useShare() {
 
   const generateShareLink = (form: FormDetails): string => {
     const baseUrl = window.location.origin
-    const encodedData = btoa(encodeURIComponent(JSON.stringify(form)))
+
+    const sharedData = { ...form };
+
+    delete sharedData.creatorToken;
+
+    const encodedData = btoa(encodeURIComponent(JSON.stringify(sharedData)))
     return `${baseUrl}/import?data=${encodedData}`
   };
 
