@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card } from 'primevue'
+import { Card, Tag } from 'primevue'
 import type { FormSummary } from '@/models/form.model.ts'
 
 defineProps<{form: FormSummary}>();
@@ -8,13 +8,24 @@ defineProps<{form: FormSummary}>();
 <template>
   <Card class="w-full">
     <template #title>
-        <div class="flex flex-row justify-between">
-          <span class="text-xl group-hover:text-primary-500 transition-colors">
-            {{ form.title }}
-          </span>
-          <span>right</span>
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between items-center">
+          <Tag
+            :value="form.ongoing ? 'Aktywna' : 'Zakończona'"
+            :severity="form.ongoing ? 'success' : 'secondary'"
+            class="uppercase text-[10px]"
+          />
+
+          <div v-if="form.has_voted" class="flex items-center gap-2 text-base text-primary-500">
+            <i class="pi pi-check-circle "></i>
+            <span class="text-sm">Zagłosowano</span>
+          </div>
         </div>
 
+        <span class="text-xl group-hover:text-primary-500 transition-colors">
+          {{ form.title }}
+        </span>
+      </div>
     </template>
 
     <template #content>
