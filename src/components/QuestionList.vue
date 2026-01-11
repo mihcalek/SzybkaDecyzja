@@ -21,7 +21,7 @@ const addNewQuestion = () => {
     label: '',
     required: true,
     options: ['']
-  })
+  } as FormQuestion)
 }
 
 const removeQuestion = (index: number) => {
@@ -43,7 +43,7 @@ defineExpose({ getQuestionsData })
 
     <div v-for="(question, index) in questions" :key="question.id">
       <QuestionListItem
-        v-model="questions[index]"
+        v-model="questions[index]!"
         @remove="removeQuestion(index)"
       />
     </div>
