@@ -1,4 +1,4 @@
 @import "tailwindcss";
-@import "tailwindcss-primeui";
+@plugin "tailwindcss-primeui";
 
-@layer base, primevue, utilities;
+@layer theme, base, primevue, components, utilities;
