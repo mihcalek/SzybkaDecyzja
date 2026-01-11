@@ -1,7 +1,11 @@
 <script setup lang="ts">
+
 </script>
+
 <template>
-  <main>
-    <RouterView/>
-  </main>
+  New form view
 </template>
+
+<style scoped>
+
+</style>
