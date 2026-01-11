@@ -1,8 +1,21 @@
 <script setup lang="ts">
-import { Card, Tag } from 'primevue'
-import type { FormSummary } from '@/models/form.model.ts'
+import { Card, Tag, Button } from 'primevue'
+import type { FormSummary, FormDetails } from '@/models/form.model.ts'
+import { useShare } from '@/composables/share.logic';
+import { StorageService } from '@/composables/storage.logic.ts'
 
-defineProps<{form: FormSummary}>();
+defineProps<{form: FormSummary | FormDetails}>()
+
+const { copyShareLink } = useShare()
+
+const handleShare = (form: FormSummary | FormDetails) => {
+  if ('questions' in form) {
+    copyShareLink(form);
+  } else {
+    const fullForm = StorageService.getFormById(form.id)
+    if (fullForm) copyShareLink(fullForm)
+  }
+}
 
 </script>
 <template>
@@ -16,9 +29,19 @@ defineProps<{form: FormSummary}>();
             class="uppercase text-[10px]"
           />
 
-          <div v-if="form.has_voted" class="flex items-center gap-2 text-base text-primary-500">
-            <i class="pi pi-check-circle "></i>
-            <span class="text-sm">Zagłosowano</span>
+          <div class="flex flex-col items-end gap-2">
+            <Button
+              class="pi pi-share-alt"
+              severity="secondary"
+              text
+              rounded
+              @click.stop.prevent="handleShare(form)"
+            />
+            <div v-if="form.has_voted" class="flex items-center gap-2 text-base text-primary-500">
+              <i class="pi pi-check-circle "></i>
+              <span class="text-sm">Zagłosowano</span>
+            </div>
+
           </div>
         </div>
 

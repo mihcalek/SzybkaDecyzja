@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import FormListItem from '@/components/FormListItem.vue'
 import type { FormSummary } from '@/models/form.model.ts'
-import { MOCK_FORMS_LIST } from '@/composables/forms.data.ts'
 import { ref, onMounted } from 'vue'
 import { StorageService } from '@/composables/storage.logic'
 
-const data = ref<FormSummary[]>([...MOCK_FORMS_LIST])
+const data = ref<FormSummary[]>([])
 
 onMounted(() => {
-  const localForms = StorageService.getFormSummaries()
-  data.value = [...localForms, ...MOCK_FORMS_LIST]
+  data.value = StorageService.getFormSummaries()
 })
 </script>
 <template>
