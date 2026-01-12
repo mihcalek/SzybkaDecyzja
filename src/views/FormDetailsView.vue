@@ -5,6 +5,7 @@ import { StorageService } from '@/composables/storage.logic'
 import type { FormDetails } from '@/models/form.model'
 import {Button, RadioButton, Checkbox, Card, InputText } from 'primevue'
 import PageHeader from '@/components/PageHeader.vue'
+import { SecretService } from '@/composables/secret.logic.ts'
 
 const route = useRoute()
 const router = useRouter()
@@ -37,7 +38,7 @@ const isFormValid = computed(() => {
   })
 })
 
-const submitVote = () => {
+function submitVote() {
   if (!form.value || !isFormValid.value) return
 
   const updatedForm = { ...form.value }
@@ -47,13 +48,38 @@ const submitVote = () => {
   StorageService.updateForm(updatedForm)
 
   submitted.value = true
-};
+}
+
+const isReadOnly = computed(() => {
+  return form.value?.has_voted || !form.value?.ongoing
+})
+
+const isOwner = computed(() => {
+  if (!form.value) return false
+  return SecretService.verifyOwnership(form.value.id, form.value.creatorToken)
+})
+
+const handleClosePoll = () => {
+  if (!form.value) return
+  form.value.ongoing = false
+  StorageService.updateForm(form.value)
+}
 </script>
 
 <template>
-  <div class="max-w-3xl mx-auto pb-20 px-4">
     <div v-if="form && !submitted">
-      <PageHeader :title="form.title" :description="form.description" />
+      <PageHeader :title="form.title" :description="form.description">
+        <template #actions>
+          <Button
+            v-if="isOwner && form.ongoing"
+            label="Zakończ ankietę"
+            icon="pi pi-lock"
+            severity="warning"
+            outlined
+            @click="handleClosePoll"
+          />
+        </template>
+      </PageHeader>
 
       <div class="flex flex-col gap-6">
         <Card v-for="q in form.questions" :key="q.id" class="border border-surface-200 shadow-none">
@@ -102,5 +128,4 @@ const submitVote = () => {
       <p class="text-surface-500 max-w-sm">Twój głos został zapisany lokalnie. Możesz teraz wrócić do listy ankiet.</p>
       <Button label="Wróć do strony głównej" @click="router.push({ name: 'AllForms' })" severity="secondary" />
     </div>
-  </div>
 </template>

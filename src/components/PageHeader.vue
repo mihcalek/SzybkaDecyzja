@@ -30,7 +30,17 @@ const handleBack = () => {
       @click="handleBack()"
       class="mb-4 p-0"
     />
-    <h1 class="text-4xl font-bold mb-2">{{ title }}</h1>
-    <p class="text-surface-600 dark:text-surface-400 text-lg">{{ description }}</p>
+    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+      <div class="flex-1">
+        <h1 class="text-4xl font-bold mb-2">{{ title }}</h1>
+        <p v-if="description" class="text-surface-600 dark:text-surface-400 text-lg">
+          {{ description }}
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <slot name="actions"></slot>
+      </div>
+    </div>
   </header>
 </template>
