@@ -16,14 +16,19 @@ export const StorageService = {
   },
 
   getForms(): FormDetails[] {
-    const data = localStorage.getItem(FORMS_KEY);
+    const data = localStorage.getItem(FORMS_KEY)
     const localForms: FormDetails[] = data ? JSON.parse(data) : []
 
-    const localIds = localForms.map(f => f.id);
-
+    const localIds = localForms.map(f => f.id)
     const filteredMocks = MOCK_FORM_DETAILS.filter(mock => !localIds.includes(mock.id))
 
-    return [...localForms, ...filteredMocks]
+    const allForms = [...localForms, ...filteredMocks]
+
+    return allForms.sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime()
+      const dateB = new Date(b.createdAt).getTime()
+      return dateB - dateA
+    })
   },
 
   getFormSummaries(): FormSummary[] {
