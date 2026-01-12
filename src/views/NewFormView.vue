@@ -33,7 +33,10 @@ const handlePublish = () => {
   }
 
   StorageService.saveForm(newForm)
-  router.push({ name: 'AllForms' })
+  router.push({
+    name: 'FormDetails',
+    params: { id: formId }
+  })
 };
 </script>
 
