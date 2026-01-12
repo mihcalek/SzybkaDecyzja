@@ -111,7 +111,7 @@ const checkIfSelected = (questionId: string, option: string): boolean => {
 </script>
 
 <template>
-  <div v-if="form" class="max-w-3xl mx-auto pb-20 px-4">
+  <div v-if="form">
     <PageHeader :title="form.title" :description="form.description">
       <template #actions>
         <Button
