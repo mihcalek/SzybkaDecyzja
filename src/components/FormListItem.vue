@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { Card, Tag, Button } from 'primevue'
 import type { FormSummary, FormDetails } from '@/models/form.model.ts'
-import { useShare } from '@/composables/share.logic';
+import { useShare } from '@/composables/share.logic'
 import { StorageService } from '@/composables/storage.logic.ts'
+import { SecretService } from '@/composables/secret.logic'
+import {computed} from 'vue'
 
-defineProps<{form: FormSummary | FormDetails}>()
+const props = defineProps<{form: FormSummary | FormDetails}>()
 
 const { copyShareLink } = useShare()
 
@@ -16,6 +18,14 @@ const handleShare = (form: FormSummary | FormDetails) => {
     if (fullForm) copyShareLink(fullForm)
   }
 }
+
+const isOwner = computed(() => {
+  if (!props.form?.creatorToken || !props.form?.id) return false
+
+  const expectedToken = SecretService.generateOwnershipToken(props.form.id)
+
+  return props.form?.creatorToken === expectedToken
+});
 
 </script>
 <template>
@@ -29,7 +39,7 @@ const handleShare = (form: FormSummary | FormDetails) => {
               :severity="form.ongoing ? 'success' : 'secondary'"
               class="uppercase text-[10px]"
             />
-            <Tag v-if="form.creatorToken" value="Twoja ankieta" severity="info" variant="outline"  class="uppercase text-[10px]"/>
+            <Tag v-if="isOwner" value="Twoja ankieta" severity="info" variant="outline"  class="uppercase text-[10px]"/>
             <Tag v-if="form.has_voted" value="Zagłosowano" severity="success" variant="outline"  class="uppercase text-[10px]"/>
           </div>
 

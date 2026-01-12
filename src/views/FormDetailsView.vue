@@ -39,18 +39,10 @@ const isFormValid = computed(() => {
 const submitVote = () => {
   if (!form.value || !isFormValid.value) return
 
-  // 1. Prepare submission data
-  const submission: FormAnswer[] = Object.entries(answers.value).map(([id, value]) => ({
-    questionId: id,
-    value: value
-  }));
-
-  // 2. Update Local Storage (Simulating a backend increment)
   const updatedForm = { ...form.value }
   updatedForm.number_of_votes += 1
   updatedForm.has_voted = true
 
-  // Save updated form back to the list
   StorageService.updateForm(updatedForm)
 
   submitted.value = true

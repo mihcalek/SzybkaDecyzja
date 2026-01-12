@@ -6,6 +6,7 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import QuestionList from '@/components/QuestionList.vue';
 import { StorageService } from '@/composables/storage.logic';
+import { SecretService } from '@/composables/secret.logic.ts'
 
 const router = useRouter()
 
@@ -16,11 +17,12 @@ const questionListRef = ref<InstanceType<typeof QuestionList> | null>(null)
 
 const handlePublish = () => {
   const questions = questionListRef.value?.getQuestionsData()
+  const formId = crypto.randomUUID()
 
   const newForm = {
-    id: crypto.randomUUID(),
+    id: formId,
     title: title.value,
-    creatorToken: crypto.randomUUID(),
+    creatorToken: SecretService.generateOwnershipToken(formId),
     description: description.value,
     questions: questions || [],
     ongoing: true,
