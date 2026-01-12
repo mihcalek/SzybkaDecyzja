@@ -3,12 +3,14 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { StorageService } from '@/composables/storage.logic'
 import type { FormDetails } from '@/models/form.model'
-import {Button, RadioButton, Checkbox, Card, InputText } from 'primevue'
+import {Button, RadioButton, Checkbox, Card, InputText, ProgressBar } from 'primevue'
 import PageHeader from '@/components/PageHeader.vue'
 import { SecretService } from '@/composables/secret.logic.ts'
+import { useShare } from '@/composables/share.logic'
 
 const route = useRoute()
 const router = useRouter()
+const { copyShareLink } = useShare()
 
 const form = ref<FormDetails | null>(null)
 const answers = ref<Record<string, any>>({})
@@ -47,17 +49,32 @@ function submitVote() {
   if (!form.value || !isFormValid.value) return
 
   const updatedForm = { ...form.value }
+
   updatedForm.number_of_votes += 1
   updatedForm.has_voted = true
   updatedForm.user_selections = JSON.parse(JSON.stringify(answers.value))
 
+  updatedForm.questions.forEach((q) => {
+    if (q.type === 'single_select' || q.type === 'multi_select') {
+      if (!q.results) q.results = {}
+
+      const selection = answers.value[q.id]
+
+      if (q.type === 'single_select' && selection) {
+        q.results[selection] = (q.results[selection] || 0) + 1
+      }
+      else if (q.type === 'multi_select' && Array.isArray(selection)) {
+        selection.forEach(opt => {
+          q.results![opt] = (q.results![opt] || 0) + 1
+        })
+      }
+    }
+  })
+
   StorageService.updateForm(updatedForm)
 
-  if (isOwner.value) {
-    form.value = updatedForm
-  } else {
-    submitted.value = true
-  }
+  if (isOwner.value) form.value = updatedForm
+  else submitted.value = true
 }
 
 const isReadOnly = computed(() => {
@@ -74,12 +91,36 @@ const handleClosePoll = () => {
   form.value.ongoing = false
   StorageService.updateForm(form.value)
 }
+
+const handleShare = () => {
+  if (form.value) {
+    copyShareLink(form.value)
+  }
+}
+
+const checkIfSelected = (questionId: string, option: string): boolean => {
+  const val = answers.value[questionId]
+  if (!val) return false
+
+  if (Array.isArray(val)) {
+    return val.includes(option)
+  }
+
+  return val === option
+};
 </script>
 
 <template>
   <div v-if="form" class="max-w-3xl mx-auto pb-20 px-4">
     <PageHeader :title="form.title" :description="form.description">
       <template #actions>
+        <Button
+          icon="pi pi-share-alt"
+          severity="secondary"
+          outlined
+          v-tooltip.top="'Kopiuj link do ankiety'"
+          @click="handleShare"
+        />
         <Button
           v-if="isOwner && form.ongoing"
           label="Zakończ ankietę"
@@ -104,8 +145,30 @@ const handleClosePoll = () => {
           <span class="text-xl">{{ q.label }}</span>
           <span v-if="q.required && !isReadOnly" class="text-red-500 ml-1">*</span>
         </template>
-
         <template #content>
+          <div v-if="isReadOnly && (q.type === 'single_select' || q.type === 'multi_select')">
+            <div v-for="opt in q.options" :key="opt" class="mb-4">
+              <div class="flex justify-between mb-1 text-sm">
+
+                <span :class="{ 'font-bold text-primary-600': checkIfSelected(q.id, opt) }">
+                  {{ opt }}
+                  <i v-if="checkIfSelected(q.id, opt)" class="pi pi-check-circle ml-1"></i>
+                </span>
+                <span class="text-surface-500">
+                  {{ q.results?.[opt] || 0 }} głosów
+                </span>
+              </div>
+
+              <ProgressBar
+                :value="((q.results?.[opt] || 0) / form.number_of_votes) * 100"
+                :showValue="false"
+                style="height: 8px"
+              />
+            </div>
+
+
+          </div>
+
           <div v-if="q.type === 'single_select'" class="flex flex-col gap-3">
             <div v-for="opt in (q as any).options" :key="opt" class="flex items-center gap-3">
               <RadioButton

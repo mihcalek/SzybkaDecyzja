@@ -17,6 +17,7 @@ export interface ChoiceQuestion extends BaseQuestion {
   type: 'single_select' | 'multi_select'
   options: string[]
   allowOther?: boolean
+  results?: Record<string, number>
 }
 
 export type FormQuestion = TextQuestion | ChoiceQuestion;

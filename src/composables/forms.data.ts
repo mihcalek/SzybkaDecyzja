@@ -59,14 +59,28 @@ export const MOCK_FORM_DETAILS: FormDetails[] = [
         type: 'single_select',
         label: 'Jak oceniasz atmosferę w zespole?',
         required: true,
-        options: ['Bardzo dobra', 'Dobra', 'Przeciętna', 'Słaba']
+        options: ['Bardzo dobra', 'Dobra', 'Przeciętna', 'Słaba'],
+        // Rozkład 45 głosów
+        results: {
+          'Bardzo dobra': 20,
+          'Dobra': 15,
+          'Przeciętna': 7,
+          'Słaba': 3
+        }
       },
       {
         id: '7c8d9e0f-1a2b-3c4d-5e6f-7a8b9c0d1e2f',
         type: 'multi_select',
         label: 'Z jakich benefitów korzystasz najczęściej?',
         required: true,
-        options: ['Karta Multisport', 'Opieka medyczna', 'Kursy językowe', 'Dni owocowe']
+        options: ['Karta Multisport', 'Opieka medyczna', 'Kursy językowe', 'Dni owocowe'],
+        // W multi_select suma może przekraczać 45
+        results: {
+          'Karta Multisport': 38,
+          'Opieka medyczna': 42,
+          'Kursy językowe': 12,
+          'Dni owocowe': 25
+        }
       },
       {
         id: '9b8a7f6e-5d4c-3b2a-1a0b-9c8d7e6f5a4b',
@@ -91,14 +105,27 @@ export const MOCK_FORM_DETAILS: FormDetails[] = [
         type: 'single_select',
         label: 'Z której restauracji zamawiamy?',
         required: true,
-        options: ['Pizzeria Mario', 'Bella Napoli', 'Gusto Italiano', 'Dominos']
+        options: ['Pizzeria Mario', 'Bella Napoli', 'Gusto Italiano', 'Dominos'],
+        results: {
+          'Pizzeria Mario': 5,
+          'Bella Napoli': 4,
+          'Gusto Italiano': 2,
+          'Dominos': 1
+        }
       },
       {
         id: '123e4567-e89b-12d3-a456-426614174001',
         type: 'multi_select',
         label: 'Jakie dodatki wybierasz?',
         required: true,
-        options: ['Salami', 'Pieczarki', 'Dodatkowy ser', 'Rukola', 'Oliwki']
+        options: ['Salami', 'Pieczarki', 'Dodatkowy ser', 'Rukola', 'Oliwki'],
+        results: {
+          'Salami': 8,
+          'Pieczarki': 3,
+          'Dodatkowy ser': 10,
+          'Rukola': 4,
+          'Oliwki': 2
+        }
       }
     ]
   },
@@ -116,8 +143,14 @@ export const MOCK_FORM_DETAILS: FormDetails[] = [
         type: 'single_select',
         label: 'Preferowany kierunek',
         required: true,
-        options: ['Góry', 'Morze', 'Mazury', 'City Break']
-      }
+        options: ['Góry', 'Morze', 'Mazury', 'City Break'],
+        results: {
+          'Góry': 15,
+          'Morze': 8,
+          'Mazury': 5,
+          'City Break': 0
+        }
+      },
     ],
     user_selections: {
       '550e8400-e29b-41d4-a716-446655440001': 'Góry'
