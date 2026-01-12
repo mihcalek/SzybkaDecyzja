@@ -140,7 +140,7 @@ const checkIfSelected = (questionId: string, option: string): boolean => {
     </div>
 
     <div v-if="!submitted" class="flex flex-col gap-6" :class="{ 'opacity-70 pointer-events-none select-none': isReadOnly }">
-      <Card v-for="q in form.questions" :key="q.id" class="border border-surface-200 shadow-none">
+      <Card v-for="q in form.questions" :key="q.id" class="border border border-surface-200 dark:border-surface-700 shadow-sm">
         <template #title>
           <span class="text-xl">{{ q.label }}</span>
           <span v-if="q.required && !isReadOnly" class="text-red-500 ml-1">*</span>
