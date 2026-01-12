@@ -118,6 +118,9 @@ export const MOCK_FORM_DETAILS: FormDetails[] = [
         required: true,
         options: ['Góry', 'Morze', 'Mazury', 'City Break']
       }
-    ]
+    ],
+    user_selections: {
+      '550e8400-e29b-41d4-a716-446655440001': 'Góry'
+    }
   }
 ];

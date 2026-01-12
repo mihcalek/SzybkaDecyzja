@@ -33,7 +33,8 @@ export interface FormSummary {
 }
 
 export interface FormDetails extends FormSummary {
-  questions: FormQuestion[]
+  questions: FormQuestion[],
+  user_selections?: Record<string, any>;
 }
 
 export interface FormAnswer {
@@ -41,8 +42,3 @@ export interface FormAnswer {
   value: string | string[]
 }
 
-export interface FormSubmission {
-  formId: string
-  answers: FormAnswer[]
-  submittedAt: string | Date
-}
