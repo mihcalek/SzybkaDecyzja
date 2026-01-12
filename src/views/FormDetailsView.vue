@@ -53,7 +53,11 @@ function submitVote() {
 
   StorageService.updateForm(updatedForm)
 
-  submitted.value = true
+  if (isOwner.value) {
+    form.value = updatedForm
+  } else {
+    submitted.value = true
+  }
 }
 
 const isReadOnly = computed(() => {
