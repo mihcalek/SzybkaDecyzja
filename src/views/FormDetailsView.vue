@@ -2,8 +2,9 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { StorageService } from '@/composables/storage.logic'
-import type { FormDetails, FormAnswer } from '@/models/form.model'
+import type { FormDetails } from '@/models/form.model'
 import {Button, RadioButton, Checkbox, Card, InputText } from 'primevue'
+import PageHeader from '@/components/PageHeader.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -52,17 +53,7 @@ const submitVote = () => {
 <template>
   <div class="max-w-3xl mx-auto pb-20 px-4">
     <div v-if="form && !submitted">
-      <header class="mb-8">
-        <Button
-          icon="pi pi-arrow-left"
-          text
-          label="Powrót"
-          @click="router.push({ name: 'AllForms' })"
-          class="mb-4 p-0"
-        />
-        <h1 class="text-4xl font-bold mb-2">{{ form.title }}</h1>
-        <p class="text-surface-600 dark:text-surface-400 text-lg">{{ form.description }}</p>
-      </header>
+      <PageHeader :title="form.title" :description="form.description" />
 
       <div class="flex flex-col gap-6">
         <Card v-for="q in form.questions" :key="q.id" class="border border-surface-200 shadow-none">

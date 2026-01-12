@@ -7,6 +7,7 @@ import Textarea from 'primevue/textarea';
 import QuestionList from '@/components/QuestionList.vue';
 import { StorageService } from '@/composables/storage.logic';
 import { SecretService } from '@/composables/secret.logic.ts'
+import PageHeader from '@/components/PageHeader.vue'
 
 const router = useRouter()
 
@@ -38,18 +39,8 @@ const handlePublish = () => {
 
 <template>
   <div class="max-w-4xl mx-auto pb-20">
-    <header class="mb-8 flex items-start gap-4">
-      <router-link :to="{ name: 'AllForms' }">
-        <Button icon="pi pi-arrow-left" severity="secondary" rounded text size="large" />
-      </router-link>
 
-      <div class="flex flex-col gap-1">
-        <h1 class="text-4xl font-bold">Nowa ankieta</h1>
-        <p class="text-surface-500 dark:text-surface-400 max-w-2xl leading-relaxed">
-          Stwórz nową ankietę, dodając pytania i opcje.
-        </p>
-      </div>
-    </header>
+    <PageHeader title="Nowa ankieta" description="Stwórz nową ankietę, dodając pytania i opcje." />
 
     <div class="flex flex-col gap-8">
       <section class="flex flex-col gap-4 p-6 bg-surface-0 dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl">
