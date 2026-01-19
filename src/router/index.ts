@@ -11,7 +11,7 @@ const router = createRouter({
     { path: '/', name: 'AllForms', component: AllFormsView },
     { path: '/form', name: 'NewForm', component: NewFormView},
     { path: '/form/:id', name: 'FormDetails', component: FormDetailsView},
-    { path: '/import', name: 'ImportForm', component: () => ImportFormView },
+    { path: '/import', name: 'ImportForm', component: ImportFormView },
     { path: '/test', name: "Test", component: TestView },
   ],
 })
