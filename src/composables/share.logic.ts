@@ -10,6 +10,9 @@ export function useShare() {
     const sharedData = { ...form };
 
     delete sharedData.creatorToken;
+    delete sharedData.user_selections
+
+    sharedData.has_voted = false
 
     const encodedData = btoa(encodeURIComponent(JSON.stringify(sharedData)))
     return `${baseUrl}/import?data=${encodedData}`
